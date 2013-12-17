@@ -28,6 +28,7 @@ public class WCC_PrototypeServlet extends HttpServlet {
 		resp.getWriter().println(getUpcomingEvents());
 		//resp.getWriter().println(sb.toString());
 		//hello world
+		//new comment
 	}
 	
 	private String getUpcomingEvents() {
