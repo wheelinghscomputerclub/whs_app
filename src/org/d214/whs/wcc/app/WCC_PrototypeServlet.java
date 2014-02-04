@@ -54,4 +54,36 @@ public class WCC_PrototypeServlet extends HttpServlet {
 		jsonResponse.append("]");
 		return jsonResponse.toString();
 	}
+    
+    private static String getDailyAnnouncements()
+    {
+        StringBuffer jsonResponse = new StringBuffer("[");
+        
+        try
+        {
+            Document doc = Jsoup.connect("http://whs.d214.org/student_resources/daily_announcements.aspx").get();
+            Element table = doc.select(".bdywrpr .corwrpr-2clm-lr .cormain-2clm-lr table").first(); //still do
+            
+            Iterator<Element> ite = table.select("td").iterator();
+            String string = ite.next().text();
+            System.out.println(string);
+            
+            /*for (Iterator iterator = eventItems.iterator(); iterator.hasNext();)
+            {
+                Element element = (Element) iterator.next();
+                String elementText = element.text();
+                elementText = elementText.replace('"', '\'');
+                jsonResponse.append(String.format("\"%s\",", elementText));
+            }*/
+            
+            jsonResponse.deleteCharAt(jsonResponse.length() - 1);
+        }
+        catch (Exception exc)
+        {
+            jsonResponse.append("There was an error retrieving the daily announcements.");
+        }
+        
+        jsonResponse.append("]");
+        return jsonResponse.toString();
+    }
 }
