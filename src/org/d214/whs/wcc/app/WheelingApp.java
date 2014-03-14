@@ -16,14 +16,13 @@ public class WheelingApp
     {
         ArrayList<UpcomingEvent> result = new ArrayList<UpcomingEvent>(4);
         
-        String[] dates, titles, details;
+        String[] dates, titles;
         dates = getDates();
         titles = getTitles();
-        details = getDescriptions();
         
         for (int i = 0; i < 4; i++)
         {
-            UpcomingEvent current = new UpcomingEvent(dates[i], titles[i], details[i]);
+            UpcomingEvent current = new UpcomingEvent(dates[i], titles[i]);
             result.add(current);
         }
         
@@ -80,33 +79,6 @@ public class WheelingApp
         }
     }
     
-    /**STILL DO*/
-    //private
-    static String[] getDescriptions()
-    {
-        try
-        {
-            Document doc = Jsoup.connect("http://whs.d214.org/").get();
-            Elements eventItems = doc.select(".eventitem .descr .bold .bold '.bold'");
-            
-            String[] result = new String[4];
-            int i = 0;
-            for (Iterator iterator = eventItems.iterator(); iterator.hasNext();)
-            {
-                Element element = (Element) iterator.next();
-                String elementText = element.text();
-                result[i] = elementText;
-                i++;
-            }
-            
-            return result;
-        }
-        catch (Exception exc)
-        {
-            return new String[]{"ERROR", "ERROR", "ERROR", "ERROR"};
-        }
-    }
-    
     public static ArrayList<DailyAnnouncement> getDailyAnnouncements()
     {
         try
@@ -124,15 +96,18 @@ public class WheelingApp
                 ite.next();
                 String s = ite.next().text();
                 s = s.trim();
+                
+                //Separate into date and text
                 int index = s.indexOf(days[counter]);
                 index += days[counter].length();
                 String date = s.substring(0, index);
                 String text = s.substring(index);
                 date = date.trim();
                 text = text.trim();
-                date = fixDate(date, days[counter]);
+                
                 DailyAnnouncement current = new DailyAnnouncement(date, text);
                 result.add(current);
+                
                 counter++;
             }
             
@@ -147,64 +122,25 @@ public class WheelingApp
         }
     }
     
-    private static String fixDate(String input, String day)
+    public static ArrayList<TopNews> getTopNews()
     {
-        int a = input.indexOf(day);
-        String date = input.substring(0, a - 1);
-        
-        if (day.equals("Monday"))
-            date = date.substring(1);
-        else
-            date = date.substring(2);
-        
-        String[] elements = date.split("\\D"); //non-digit characters
-        String month;
-        switch (Integer.parseInt(elements[0]))
+        try
         {
-            case 1:
-                month = "January";
-                break;
-            case 2:
-                month = "February";
-                break;
-            case 3:
-                month = "March";
-                break;
-            case 4:
-                month = "April";
-                break;
-            case 5:
-                month = "May";
-                break;
-            case 6:
-                month = "June";
-                break;
-            case 7:
-                month = "July";
-                break;
-            case 8:
-                month = "August";
-                break;
-            case 9:
-                month = "September";
-                break;
-            case 10:
-                month = "October";
-                break;
-            case 11:
-                month = "November";
-                break;
-            case 12:
-                month = "December";
-                break;
-            default:
-                month = null;
+            Document doc = Jsoup.connect("http://whs.d214.org/").get();
+            Elements table = doc.select(".bdywrpr .corwrpr-3clm .wrpr2clm .cormain-hm #CT_Main_0_cache_pnlModule h1/p");
+            Iterator iter = table.iterator();
+            while (iter.hasNext())
+                System.out.println(iter.next());
         }
-        
-        String year = "20" + elements[2];
-        
-        String result = day + ", " + month + " " + elements[1] + ", " + year;
-        
-        return result;
+        catch (Exception exc)
+        {
+            TopNews error = new TopNews("ERROR", "ERROR");
+            ArrayList<TopNews> mistake = new ArrayList<TopNews>(1);
+            mistake.add(error);
+            return mistake;
+        }
+        return null;
     }
+    
+    /**Get emergency closing information*/
 }
