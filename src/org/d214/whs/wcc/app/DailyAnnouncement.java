@@ -1,3 +1,5 @@
+package org.d214.whs.wcc.app;
+
 public class DailyAnnouncement
 {
     public String date, text;

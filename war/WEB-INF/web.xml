@@ -6,7 +6,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
 		<servlet-name>WCC_Prototype</servlet-name>
-		<servlet-class>com.ryan.examples.wcc.WCC_PrototypeServlet</servlet-class>
+		<servlet-class>org.d214.whs.wcc.app.WCC_PrototypeServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>WCC_Prototype</servlet-name>
