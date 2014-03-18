@@ -122,24 +122,85 @@ public class WheelingApp
         }
     }
     
-    public static ArrayList<TopNews> getTopNews()
+    //public static ArrayList<TopNews> getTopNews()
+    
+    private static String[] getNewsTitles()
     {
         try
         {
             Document doc = Jsoup.connect("http://whs.d214.org/").get();
-            Elements table = doc.select(".bdywrpr .corwrpr-3clm .wrpr2clm .cormain-hm #CT_Main_0_cache_pnlModule h1/p");
+            Elements table = doc.select(".bdywrpr .corwrpr-3clm .wrpr2clm .cormain-hm #CT_Main_0_cache_pnlModule h1");
             Iterator iter = table.iterator();
+            ArrayList<String> titles = new ArrayList<String>();
+            String temp;
             while (iter.hasNext())
-                System.out.println(iter.next());
+            {
+                temp = iter.next().toString();
+                temp = temp.substring(temp.indexOf(">") + 1, temp.indexOf("<", temp.indexOf(">"))); //remove h1 tags
+                temp = temp.trim();
+                titles.add(temp);
+            }
+            titles.trimToSize();
+            return titles.toArray(new String[]{null});
         }
         catch (Exception exc)
         {
-            TopNews error = new TopNews("ERROR", "ERROR");
-            ArrayList<TopNews> mistake = new ArrayList<TopNews>(1);
-            mistake.add(error);
-            return mistake;
+            return new String[]{"ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR"};
         }
-        return null;
+    }
+    
+    //private
+    //static String[] getNews()
+    static void getNews()
+    {
+        try
+        {
+            Document doc = Jsoup.connect("http://whs.d214.org/").get();
+            Elements table = doc.select(".bdywrpr .corwrpr-3clm .wrpr2clm .cormain-hm #CT_Main_0_cache_pnlModule p");
+            Iterator iter = table.iterator();
+            ArrayList<String> titles = new ArrayList<String>();
+            String temp;
+            while (iter.hasNext())
+            {
+                temp = iter.next().toString();
+                temp = fix(temp);
+                temp = temp.trim();
+                temp = fix2(temp).trim();
+                titles.add(temp);
+                System.out.println(temp);
+            }
+            titles.trimToSize();
+            //return titles.toArray(new String[]{null});
+        }
+        catch (Exception exc)
+        {
+            //return new String[]{"ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR"};
+            System.out.println(exc);
+        }
+    }
+    
+    //Take off <p> tags
+    private static String fix(String temp)
+    {
+        int a = temp.indexOf("<p>");
+        int b = temp.indexOf("</p>");
+        return temp.substring(a + 3, b);
+    }
+    
+    //Take off the <a>Continue Reading</a>
+    //If complete (complete sentence; don't have to keep reading), returns just the news.
+    //If not complete, goes to the web page "continue reading" and returns the story.
+    /**ALSO strip off possible <img>*/
+    private static String fix2(String temp)
+    {
+        int a = temp.indexOf("<a");
+        String result1 = temp.substring(0, a);
+        if (result1.charAt(result1.length() - 1) == '.') //Complete if last character is a period
+            return result1;
+        else
+        {
+            return null;
+        }
     }
     
     /**Get emergency closing information*/
