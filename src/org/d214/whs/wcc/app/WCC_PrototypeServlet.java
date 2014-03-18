@@ -1,16 +1,10 @@
 package org.d214.whs.wcc.app;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 
-import javax.servlet.http.*;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.select.Elements;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
 public class WCC_PrototypeServlet extends HttpServlet {
@@ -27,7 +21,9 @@ public class WCC_PrototypeServlet extends HttpServlet {
 		sb.append("\"five\"");
 		sb.append("]");
 		
-		resp.getWriter().println(WheelingApp.getUpcomingEvents());
+		WheelingApp app = new WheelingApp();
+		
+		resp.getWriter().println(app.getUpcomingEventsJson());
 		//resp.getWriter().println(sb.toString());
 		//hello world
 		//new comment

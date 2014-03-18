@@ -1,5 +1,6 @@
 package org.d214.whs.wcc.app;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jsoup.Jsoup;
@@ -7,12 +8,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
+import com.google.gson.Gson;
 
 
 public class WheelingApp
 {
-    public static ArrayList<UpcomingEvent> getUpcomingEvents()
+	public String getUpcomingEventsJson() {
+		Gson gson = new Gson();
+		return gson.toJson(getUpcomingEvents());
+	}
+    public ArrayList<UpcomingEvent> getUpcomingEvents()
     {
         ArrayList<UpcomingEvent> result = new ArrayList<UpcomingEvent>(4);
         
@@ -29,7 +34,7 @@ public class WheelingApp
         return result;
     }
     
-    private static String[] getDates()
+    protected String[] getDates()
     {
         try
         {
@@ -54,7 +59,7 @@ public class WheelingApp
         }
     }
     
-    private static String[] getTitles()
+    protected String[] getTitles()
     {
         try
         {
