@@ -2,7 +2,7 @@ package org.d214.whs.wcc.app;
 
 public class TopNews
 {
-    private String title, details;
+    public String title, details;
     
     public TopNews(String newsTitle, String newsDetails)
     {

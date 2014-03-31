@@ -127,7 +127,18 @@ public class WheelingApp
         }
     }
     
-    //public static ArrayList<TopNews> getTopNews()
+    public static ArrayList<TopNews> getTopNews()
+    {
+        String[] titles = getNewsTitles();
+        String[] news = getNews();
+        ArrayList<TopNews> result = new ArrayList<TopNews>(titles.length);
+        for (int i = 0; i < titles.length; i++)
+        {
+            TopNews current = new TopNews(titles[i], news[i]);
+            result.add(current);
+        }
+        return result;
+    }
     
     private static String[] getNewsTitles()
     {
@@ -146,7 +157,7 @@ public class WheelingApp
                 titles.add(temp);
             }
             titles.trimToSize();
-            return titles.toArray(new String[]{null});
+            return titles.toArray(new String[]{null}); //convert ArrayList<String> to String[]
         }
         catch (Exception exc)
         {
@@ -154,9 +165,7 @@ public class WheelingApp
         }
     }
     
-    //private
-    //static String[] getNews()
-    static void getNews()
+    private static String[] getNews()
     {
         try
         {
@@ -172,15 +181,13 @@ public class WheelingApp
                 temp = temp.trim();
                 temp = fix2(temp).trim();
                 titles.add(temp);
-                System.out.println(temp);
             }
             titles.trimToSize();
-            //return titles.toArray(new String[]{null});
+            return titles.toArray(new String[]{null}); //convert ArrayList<String> to String[]
         }
         catch (Exception exc)
         {
-            //return new String[]{"ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR"};
-            System.out.println(exc);
+            return new String[]{"ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR"};
         }
     }
     
@@ -192,20 +199,54 @@ public class WheelingApp
         return temp.substring(a + 3, b);
     }
     
-    //Take off the <a>Continue Reading</a>
-    //If complete (complete sentence; don't have to keep reading), returns just the news.
-    //If not complete, goes to the web page "continue reading" and returns the story.
     /**ALSO strip off possible <img>*/
     private static String fix2(String temp)
     {
         int a = temp.indexOf("<a");
         String result1 = temp.substring(0, a);
-        if (result1.charAt(result1.length() - 1) == '.') //Complete if last character is a period
+        result1 = result1.trim();
+        if (result1.charAt(result1.length() - 1) == '.') //Considered complete if last character is a period
             return result1;
         else
+            return retrieveCompleteStory(temp);
+    }
+    
+    //extract <a> link, go to that page, and retrieve story
+    private static String retrieveCompleteStory(String string)
+    {
+        //Find <a> link
+        int a = string.indexOf("<a");
+        int b = string.indexOf(">", a);
+        String c = string.substring(a, b);
+        int d = c.indexOf("href=\"");
+        int e = c.indexOf("\"", d + "href=\"".length());
+        String link = c.substring(d + "href=\"".length(), e);
+        link = "http://whs.d214.org" + link;
+        
+        //Get story text
+        String g = null;
+        String i = null;
+        try
         {
-            return null;
+            Document doc = Jsoup.connect(link).get();
+            Element f = doc.select(".cormain-2clm-lr").first();
+            g = f.text();
+            Element h = doc.select(".cormain-2clm-lr h4").first(); //This includes the date of the news, which needs to be removed
+            i = h.text();
         }
+        catch (Exception exc)
+        {
+            return "ERROR";
+        }
+        
+        //clean up String g
+        String j = "Back to News"; //this has to be removed too
+        int k = g.indexOf(i) + i.length();
+        int l = g.indexOf(j);
+        String m = g.substring(k, l);
+        m = m.trim();
+        
+        return m;
     }
     
     /**Get emergency closing information*/
