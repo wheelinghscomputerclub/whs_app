@@ -55,7 +55,9 @@ public class WheelingApp
         }
         catch (Exception exc)
         {
-            return new String[]{"ERROR", "ERROR", "ERROR", "ERROR"};
+            System.err.println(exc.getLocalizedMessage());
+            exc.printStackTrace();
+        	return new String[]{"ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR"};
         }
     }
     
@@ -80,7 +82,9 @@ public class WheelingApp
         }
         catch (Exception exc)
         {
-            return new String[]{"ERROR", "ERROR", "ERROR", "ERROR"};
+        	System.err.println(exc.getLocalizedMessage());
+            exc.printStackTrace();
+        	return new String[]{"ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR"};
         }
     }
     
@@ -120,7 +124,9 @@ public class WheelingApp
         }
         catch (Exception exc)
         {
-            DailyAnnouncement error = new DailyAnnouncement("ERROR", "ERROR");
+        	System.err.println(exc.getLocalizedMessage());
+            exc.printStackTrace();
+        	DailyAnnouncement error = new DailyAnnouncement("ERRORERROR", "ERRORERROR");
             ArrayList<DailyAnnouncement> mistake = new ArrayList<DailyAnnouncement>(1);
             mistake.add(error);
             return mistake;
@@ -161,7 +167,9 @@ public class WheelingApp
         }
         catch (Exception exc)
         {
-            return new String[]{"ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR"};
+        	System.err.println(exc.getLocalizedMessage());
+            exc.printStackTrace();
+        	return new String[]{"ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR"};
         }
     }
     
@@ -187,7 +195,9 @@ public class WheelingApp
         }
         catch (Exception exc)
         {
-            return new String[]{"ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR"};
+        	System.err.println(exc.getLocalizedMessage());
+            exc.printStackTrace();
+        	return new String[]{"ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR"};
         }
     }
     
