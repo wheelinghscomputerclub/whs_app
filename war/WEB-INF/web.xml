@@ -5,13 +5,32 @@ xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
-		<servlet-name>WCC_Prototype</servlet-name>
-		<servlet-class>org.d214.whs.wcc.app.WCC_PrototypeServlet</servlet-class>
+		<servlet-name>DailyAnnouncementsServlet</servlet-name>
+		<servlet-class>org.d214.whs.wcc.app.DailyAnnouncementsServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>WCC_Prototype</servlet-name>
-		<url-pattern>/wcc_prototype</url-pattern>
+		<servlet-name>DailyAnnouncementsServlet</servlet-name>
+		<url-pattern>/daily_annoucements</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>TopNewsServlet</servlet-name>
+		<servlet-class>org.d214.whs.wcc.app.TopNewsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TopNewsServlet</servlet-name>
+		<url-pattern>/top_news</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>UpcomingEventsServlet</servlet-name>
+		<servlet-class>org.d214.whs.wcc.app.UpcomingEventsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UpcomingEventsServlet</servlet-name>
+		<url-pattern>/upcoming_events</url-pattern>
+	</servlet-mapping>
+	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

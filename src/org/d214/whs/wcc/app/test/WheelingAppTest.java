@@ -8,8 +8,6 @@ import org.d214.whs.wcc.app.UpcomingEvent;
 import org.d214.whs.wcc.app.WheelingApp;
 import org.junit.Test;
 
-import com.google.gson.Gson;
-
 public class WheelingAppTest {
 
 	class WheelingAppTestable extends WheelingApp {
