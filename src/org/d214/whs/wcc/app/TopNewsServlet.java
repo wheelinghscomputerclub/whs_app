@@ -12,6 +12,6 @@ public class TopNewsServlet extends HttpServlet {
 			throws IOException {
 		resp.setContentType("application/json");
 		WheelingApp app = new WheelingApp();
-		resp.getWriter().println("TopNews");
+		resp.getWriter().println(app.getTopNewsJson());
 	}
 }

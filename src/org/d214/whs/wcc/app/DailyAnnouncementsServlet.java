@@ -12,6 +12,6 @@ public class DailyAnnouncementsServlet extends HttpServlet {
 			throws IOException {
 		resp.setContentType("application/json");
 		WheelingApp app = new WheelingApp();
-		resp.getWriter().println("DailyAnnoucements");
+		resp.getWriter().println(app.getDailyAnnouncementsJson());
 	}
 }

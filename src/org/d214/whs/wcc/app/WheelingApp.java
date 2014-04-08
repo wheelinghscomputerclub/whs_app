@@ -17,6 +17,19 @@ public class WheelingApp
 		Gson gson = new Gson();
 		return gson.toJson(getUpcomingEvents());
 	}
+	
+	public String getTopNewsJson()
+	{
+		Gson gson = new Gson();
+		return gson.toJson(getTopNews());
+	}
+	
+	public String getDailyAnnouncementsJson()
+	{
+		Gson gson = new Gson();
+		return gson.toJson(getDailyAnnouncements());
+	}
+	
     public ArrayList<UpcomingEvent> getUpcomingEvents()
     {
         ArrayList<UpcomingEvent> result = new ArrayList<UpcomingEvent>(4);
