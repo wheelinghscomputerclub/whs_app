@@ -117,15 +117,15 @@ public class WheelingApp
             {
                 ite.next();
                 String s = ite.next().text();
-                s = s.trim();
+                s = trim(s);
                 
                 //Separate into date and text
                 int index = s.indexOf(days[counter]);
                 index += days[counter].length();
                 String date = s.substring(0, index);
                 String text = s.substring(index);
-                date = date.trim();
-                text = text.trim();
+                date = trim(date);
+                text = trim(text);
                 
                 DailyAnnouncement current = new DailyAnnouncement(date, text);
                 result.add(current);
@@ -172,7 +172,7 @@ public class WheelingApp
             {
                 temp = iter.next().toString();
                 temp = temp.substring(temp.indexOf(">") + 1, temp.indexOf("<", temp.indexOf(">"))); //remove h1 tags
-                temp = temp.trim();
+                temp = trim(temp);
                 titles.add(temp);
             }
             titles.trimToSize();
@@ -199,8 +199,8 @@ public class WheelingApp
             {
                 temp = iter.next().toString();
                 temp = fix(temp);
-                temp = temp.trim();
-                temp = fix2(temp).trim();
+                temp = trim(temp);
+                temp = trim(fix2(temp));
                 titles.add(temp);
             }
             titles.trimToSize();
@@ -227,7 +227,7 @@ public class WheelingApp
     {
         int a = temp.indexOf("<a");
         String result1 = temp.substring(0, a);
-        result1 = result1.trim();
+        result1 = trim(result1);
         if (result1.charAt(result1.length() - 1) == '.') //Considered complete if last character is a period
             return result1;
         else
@@ -267,9 +267,41 @@ public class WheelingApp
         int k = g.indexOf(i) + i.length();
         int l = g.indexOf(j);
         String m = g.substring(k, l);
-        m = m.trim();
+        m = trim(m);
         
         return m;
+    }
+    
+    //Similar to String.trim() but also gets rid of &nbsp;
+    private static String trim(String s)
+    {
+        int frontOffset = 0;
+        int backOffset = 0;
+        
+        char current = 0x0;
+        for (int i = 0; i < s.length(); i++)
+        {
+            current = s.charAt(i);
+            if ((current < 33) /*includes 0-32*/ || (current == 160))
+                frontOffset++;
+            else
+                break;
+        }
+        
+        if (frontOffset == s.length()) //if it was all whitespace
+            return "";
+        
+        for (int i = s.length() - 1; i > -1; i--)
+        {
+            current = s.charAt(i);
+            if ((current < 33) || (current == 160))
+                backOffset++;
+            else
+                break;
+        }
+        
+        String result = s.substring(frontOffset, s.length() - backOffset);
+        return result;
     }
     
     /**Get emergency closing information*/
