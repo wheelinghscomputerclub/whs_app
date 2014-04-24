@@ -11,7 +11,8 @@ public class UpcomingEventsServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		resp.setContentType("application/json");
-		WheelingApp app = new WheelingApp();
-		resp.getWriter().println(app.getUpcomingEventsJson());
+		//WheelingApp app = new WheelingApp();
+		//resp.getWriter().println(app.getUpcomingEventsJson());
+		resp.getWriter().println(Cache.getUpcomingEvents());
 	}
 }

@@ -11,7 +11,8 @@ public class TopNewsServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		resp.setContentType("application/json");
-		WheelingApp app = new WheelingApp();
-		resp.getWriter().println(app.getTopNewsJson());
+		//WheelingApp app = new WheelingApp();
+		//resp.getWriter().println(app.getTopNewsJson());
+		resp.getWriter().println(Cache.getTopNews());
 	}
 }
