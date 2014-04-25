@@ -1,6 +1,5 @@
 package org.d214.whs.wcc.app;
 
-import java.io.*;
 import java.util.Calendar;
 
 public class Cache
@@ -39,107 +38,34 @@ public class Cache
     
     public static String getUpcomingEvents()
     {
-        if (sameDate())
-        {
-            if (upcomingEvents != null)
-                return upcomingEvents;
-            else
-                return wa.getUpcomingEventsJson();
-        }
-        else
-        {
-            update();
-            return upcomingEvents;
-        }
+    	if (sameDate() && (upcomingEvents != null))
+    		return upcomingEvents;
+    	else
+    	{
+    		update();
+    		return upcomingEvents;
+    	}
     }
     
     public static String getTopNews()
     {
-        if (sameDate())
-        {
-            if (topNews != null)
-                return topNews;
-            else
-                return wa.getTopNewsJson();
-        }
-        else
-        {
-            update();
-            return topNews;
-        }
+    	if (sameDate() && (topNews != null))
+    		return topNews;
+    	else
+    	{
+    		update();
+    		return topNews;
+    	}
     }
     
     public static String getDailyAnnouncements()
     {
-        if (sameDate())
-        {
-            if (dailyAnnouncements != null)
-                return dailyAnnouncements;
-            else
-                return wa.getDailyAnnouncementsJson();
-        }
-        else
-        {
-            update();
-            return dailyAnnouncements;
-        }
-    }
-    
-    
-    
-    /*      Persistence section     */
-    
-    //Write cache to file.
-    public static void writeCache()
-    {
-        try
-        {
-            File out = new File("whs_app_cache");
-            FileOutputStream fos = new FileOutputStream(out);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            
-            //write values
-            oos.writeObject(upcomingEvents);
-            oos.writeObject(topNews);
-            oos.writeObject(dailyAnnouncements);
-            oos.writeObject(lastUpdated); //yes, Calendar is serializable
-            
-            oos.close();
-            fos.close();
-        }
-        catch (IOException exc)
-        {
-            System.err.println(exc);
-        }
-    }
-    
-    //returns boolean because true if there was a cache file to read from,
-    //false if there wasn't a cache file
-    public static boolean readCache()
-    {
-        try
-        {
-            File in = new File("whs_app_cache");
-            if (!in.exists())
-                return false;
-            
-            FileInputStream fis = new FileInputStream(in);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            
-            upcomingEvents = (String) ois.readObject();
-            topNews = (String) ois.readObject();
-            dailyAnnouncements = (String) ois.readObject();
-            lastUpdated = (Calendar) ois.readObject();
-            
-            ois.close();
-            fis.close();
-            
-            return true;
-        }
-        catch (Exception exc)
-        {
-            System.err.println(exc);
-            return false;
-        }
+    	if (sameDate() && (dailyAnnouncements != null))
+    		return dailyAnnouncements;
+    	else
+    	{
+    		update();
+    		return dailyAnnouncements;
+    	}
     }
 }
