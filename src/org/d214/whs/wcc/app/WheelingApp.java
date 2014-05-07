@@ -1,5 +1,6 @@
 package org.d214.whs.wcc.app;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -101,13 +102,17 @@ public class WheelingApp
         }
     }
     
-    public static ArrayList<DailyAnnouncement> getDailyAnnouncements()
+    protected Element getAnnouncementsTable() throws IOException {
+    	Document doc = Jsoup.connect("http://whs.d214.org/student_resources/daily_announcements.aspx").get();
+        Element table = doc.select(".bdywrpr .corwrpr-2clm-lr .cormain-2clm-lr table").first();
+        return table;
+    }
+    
+    public ArrayList<DailyAnnouncement> getDailyAnnouncements()
     {
         try
         {
-            Document doc = Jsoup.connect("http://whs.d214.org/student_resources/daily_announcements.aspx").get();
-            Element table = doc.select(".bdywrpr .corwrpr-2clm-lr .cormain-2clm-lr table").first();
-            
+            Element table = getAnnouncementsTable(); 
             ArrayList<DailyAnnouncement> result = new ArrayList<DailyAnnouncement>(5);
             
             Iterator<Element> ite = table.select("td").iterator();
@@ -146,7 +151,7 @@ public class WheelingApp
         }
     }
     
-    public static ArrayList<TopNews> getTopNews()
+    public ArrayList<TopNews> getTopNews()
     {
         String[] titles = getNewsTitles();
         String[] news = getNews();
@@ -159,7 +164,7 @@ public class WheelingApp
         return result;
     }
     
-    private static String[] getNewsTitles()
+    protected String[] getNewsTitles()
     {
         try
         {
@@ -186,7 +191,7 @@ public class WheelingApp
         }
     }
     
-    private static String[] getNews()
+    protected String[] getNews()
     {
         try
         {
