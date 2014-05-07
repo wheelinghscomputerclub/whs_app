@@ -127,6 +127,10 @@ public class WheelingApp
                 date = trim(date);
                 text = trim(text);
                 
+                date = cleanString(date);
+                text = cleanString(text);
+                date = convertDate(date);
+                
                 DailyAnnouncement current = new DailyAnnouncement(date, text);
                 result.add(current);
                 
@@ -301,6 +305,81 @@ public class WheelingApp
         }
         
         String result = s.substring(frontOffset, s.length() - backOffset);
+        return result;
+    }
+    
+    //Converts all &nbsp; (character code 160) to regular spaces and converts "&quot;" to "\""
+    private static String cleanString(String s)
+    {
+        char remove1 = 160;
+        String remove2 = "&quot;";
+        if (s.indexOf(remove1) > 0) //if found
+            s.replace(remove1, ' '); //replace &nbsp; with a regular space
+        if (s.contains(remove2))
+            s.replace(remove2, "\"");
+        return s;
+    }
+    
+    //Accepts something like "5.1.14 Thursday" and returns "Thursday, May 1, 2014"
+    private static String convertDate(String s)
+    {
+        String[] numbersAndDay = s.split(" ");
+        String[] numbers = numbersAndDay[0].split("\\x2E");
+        
+        String month;
+        int monthInt = Integer.parseInt(numbers[0]);
+        switch (monthInt)
+        {
+            case 1:
+                month = "January";
+                break;
+            case 2:
+                month = "February";
+                break;
+            case 3:
+                month = "March";
+                break;
+            case 4:
+                month = "April";
+                break;
+            case 5:
+                month = "May";
+                break;
+            case 6:
+                month = "June";
+                break;
+            case 7:
+                month = "July";
+                break;
+            case 8:
+                month = "August";
+                break;
+            case 9:
+                month = "September";
+                break;
+            case 10:
+                month = "October";
+                break;
+            case 11:
+                month = "November";
+                break;
+            case 12:
+                month = "December";
+                break;
+            default:
+                month = "Undecimber";
+                break;
+        }
+        
+        String result = numbersAndDay[1];
+        result += ", ";
+        result += month;
+        result += " ";
+        result += numbers[1];
+        result += ", ";
+        result += "20";
+        result += numbers[2];
+        
         return result;
     }
     
