@@ -129,7 +129,7 @@ public class WheelingApp
                 
                 date = cleanString(date);
                 text = cleanString(text);
-                date = convertDate(date);
+                //date = convertDate(date); let's save this for now
                 
                 DailyAnnouncement current = new DailyAnnouncement(date, text);
                 result.add(current);
