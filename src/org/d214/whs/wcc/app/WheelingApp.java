@@ -314,9 +314,9 @@ public class WheelingApp
         char remove1 = 160;
         String remove2 = "&quot;";
         if (s.indexOf(remove1) > 0) //if found
-            s.replace(remove1, ' '); //replace &nbsp; with a regular space
+            s = s.replace(remove1, ' '); //replace &nbsp; with a regular space
         if (s.contains(remove2))
-            s.replace(remove2, "\"");
+            s = s.replace(remove2, "\"");
         return s;
     }
     
