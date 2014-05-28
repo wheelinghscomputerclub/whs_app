@@ -125,6 +125,13 @@ public class WheelingApp
                 ite.next();
                 String s = ite.next().text();
                 s = trim(s);
+                if (s == "")
+                {
+                	DailyAnnouncement da = new DailyAnnouncement("", "");
+                	result.add(da);
+                	counter++;
+                	continue;
+                }
                 
                 //Separate into date and text
                 int index = s.indexOf(days[counter]);
