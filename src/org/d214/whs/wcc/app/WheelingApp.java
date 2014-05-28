@@ -60,6 +60,7 @@ public class WheelingApp
             {
                 Element element = (Element) iterator.next();
                 String elementText = element.text();
+                elementText = cleanString(elementText);
                 result[i] = elementText;
                 i++;
             }
@@ -87,6 +88,7 @@ public class WheelingApp
             {
                 Element element = (Element) iterator.next();
                 String elementText = element.text();
+                elementText = cleanString(elementText);
                 result[i] = elementText;
                 i++;
             }
@@ -101,13 +103,17 @@ public class WheelingApp
         }
     }
     
-    public static ArrayList<DailyAnnouncement> getDailyAnnouncements()
+    protected Element getAnnouncementsTable() throws IOException {
+    	Document doc = Jsoup.connect("http://whs.d214.org/student_resources/daily_announcements.aspx").get();
+        Element table = doc.select(".bdywrpr .corwrpr-2clm-lr .cormain-2clm-lr table").first();
+        return table;
+    }
+    
+    public ArrayList<DailyAnnouncement> getDailyAnnouncements()
     {
         try
         {
-            Document doc = Jsoup.connect("http://whs.d214.org/student_resources/daily_announcements.aspx").get();
-            Element table = doc.select(".bdywrpr .corwrpr-2clm-lr .cormain-2clm-lr table").first();
-            
+            Element table = getAnnouncementsTable(); 
             ArrayList<DailyAnnouncement> result = new ArrayList<DailyAnnouncement>(5);
             
             Iterator<Element> ite = table.select("td").iterator();
@@ -129,7 +135,7 @@ public class WheelingApp
                 
                 date = cleanString(date);
                 text = cleanString(text);
-                //date = convertDate(date); let's save this for now
+                date = convertDate(date);
                 
                 DailyAnnouncement current = new DailyAnnouncement(date, text);
                 result.add(current);
@@ -150,7 +156,7 @@ public class WheelingApp
         }
     }
     
-    public static ArrayList<TopNews> getTopNews()
+    public ArrayList<TopNews> getTopNews()
     {
         String[] titles = getNewsTitles();
         String[] news = getNews();
@@ -163,7 +169,7 @@ public class WheelingApp
         return result;
     }
     
-    private static String[] getNewsTitles()
+    protected String[] getNewsTitles()
     {
         try
         {
@@ -177,6 +183,7 @@ public class WheelingApp
                 temp = iter.next().toString();
                 temp = temp.substring(temp.indexOf(">") + 1, temp.indexOf("<", temp.indexOf(">"))); //remove h1 tags
                 temp = trim(temp);
+                temp = cleanString(temp);
                 titles.add(temp);
             }
             titles.trimToSize();
@@ -190,7 +197,7 @@ public class WheelingApp
         }
     }
     
-    private static String[] getNews()
+    protected String[] getNews()
     {
         try
         {
@@ -205,6 +212,7 @@ public class WheelingApp
                 temp = fix(temp);
                 temp = trim(temp);
                 temp = trim(fix2(temp));
+                temp = cleanString(temp);
                 titles.add(temp);
             }
             titles.trimToSize();
@@ -363,11 +371,8 @@ public class WheelingApp
             case 11:
                 month = "November";
                 break;
-            case 12:
-                month = "December";
-                break;
             default:
-                month = "Undecimber";
+                month = "December";
                 break;
         }
         
@@ -382,6 +387,40 @@ public class WheelingApp
         
         return result;
     }
+	
+	public String getEmergencyJson()
+    {
+    	Gson g = new Gson();
+    	return g.toJson(getEmergencyClosingInformation());
+    }
     
-    /**Get emergency closing information*/
+    public static String getEmergencyClosingInformation()
+    {
+        try
+        {
+            Document doc = Jsoup.connect("http://www.d214.org/district_information/emergency.aspx").get();
+            Elements stuff = doc.select("table tbody h3");
+            Iterator<Element> iter = stuff.iterator();
+            String s = iter.next().text();
+            if (s.contains("<h3>")) //just in case we get HTML tags
+            {
+                int a = s.indexOf(">");
+                int b = s.indexOf("<", a);
+                String s2 = s.substring(a + 1, b);
+                s2 = cleanString(s2);
+                return s2;
+            }
+            else
+            {
+                s = cleanString(s);
+                return s;
+            }
+        }
+        catch (Exception exc)
+        {
+            System.err.println(exc.getLocalizedMessage());
+            exc.printStackTrace();
+            return "error retrieving the emergency closing information";
+        }
+    }
 }

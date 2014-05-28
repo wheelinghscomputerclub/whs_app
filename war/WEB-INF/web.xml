@@ -10,7 +10,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DailyAnnouncementsServlet</servlet-name>
-		<url-pattern>/daily_annoucements</url-pattern>
+		<url-pattern>/daily_announcements</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>EmergencyServlet</servlet-name>
+		<servlet-class>org.d214.whs.wcc.app.EmergencyServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EmergencyServlet</servlet-name>
+		<url-pattern>/emergency</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>

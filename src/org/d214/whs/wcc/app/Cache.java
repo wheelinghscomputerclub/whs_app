@@ -7,6 +7,7 @@ public class Cache
     private Cache() {}
     
     private static String upcomingEvents, topNews, dailyAnnouncements;
+    private static String emergencyInfo;
     private static Calendar lastUpdated;
     
     //Used for accessing WheelingApp's non-static getJson() methods.
@@ -34,6 +35,7 @@ public class Cache
         topNews = wa.getTopNewsJson();
         dailyAnnouncements = wa.getDailyAnnouncementsJson();
         lastUpdated = Calendar.getInstance();
+        emergencyInfo = wa.getEmergencyJson();
     }
     
     public static String getUpcomingEvents()
@@ -66,6 +68,40 @@ public class Cache
     	{
     		update();
     		return dailyAnnouncements;
+    	}
+    }
+    
+    private static boolean hasItBeen5Minutes()
+    {
+    	if (lastUpdated == null)
+    		return true;
+    	else
+    	{
+    		final long FIVE_MINUTES = 5 * 60 * 1000L; //5 minutes in milliseconds
+    		Calendar now = Calendar.getInstance();
+    		long oldTime = lastUpdated.getTimeInMillis();
+    		long thisTime = now.getTimeInMillis();
+    		long difference = thisTime - oldTime;
+    		return (difference >= FIVE_MINUTES);
+    	}
+    }
+    
+    public static String getEmergencyClosingInformation()
+    {
+    	if (!hasItBeen5Minutes() && (emergencyInfo != null))
+    		return emergencyInfo;
+    	else //it has been 5 minutes, so time to update the emergencyInfo cache
+    	{
+    		if (sameDate())
+    		{
+    			emergencyInfo = wa.getEmergencyJson(); //update just the emergencyInfo cache if still the same day
+    			return emergencyInfo;
+    		}
+    		else
+    		{
+    			update();
+    			return emergencyInfo;
+    		}
     	}
     }
 }
