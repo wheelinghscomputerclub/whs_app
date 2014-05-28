@@ -127,7 +127,7 @@ public class WheelingApp
                 s = trim(s);
                 if (s == "")
                 {
-                	DailyAnnouncement da = new DailyAnnouncement("", "");
+                	DailyAnnouncement da = new DailyAnnouncement(days[counter], "no announcements");
                 	result.add(da);
                 	counter++;
                 	continue;
