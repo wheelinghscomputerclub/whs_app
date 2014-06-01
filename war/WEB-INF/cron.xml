@@ -20,7 +20,7 @@
     </cron>
     <cron>
     	<url>/emergency</url>
-    	<description>Refresh the emergency closing information cache every 5 minutes</description>
-    	<schedule>every 5 minutes</schedule>
+    	<description>Refresh the emergency closing information cache every 15 minutes</description>
+    	<schedule>every 15 minutes</schedule>
     </cron>
 </cronentries>

@@ -15,4 +15,9 @@ public class UpcomingEventsServlet extends HttpServlet {
 		//resp.getWriter().println(app.getUpcomingEventsJson());
 		resp.getWriter().println(Cache.getUpcomingEvents());
 	}
+
+
+public static void main(String args[]) {
+	System.out.println(Cache.getUpcomingEvents());
+}
 }

@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 
-import com.google.appengine.api.search.Document;
+import org.jsoup.nodes.Document;
 
 public class WheelingAppTest {
 
@@ -32,13 +32,13 @@ public class WheelingAppTest {
 		  }
 	      
 	      @Override
-		  protected String[] getDates() {
+		  protected String[] getDates(Document doc) {
 			  String[] mockDates = new String[] {"Thursday October 21, 2004", "Monday October 31, 2004", "Wednesday November 3, 2004", "Friday November 5, 2004", "Saturday November 6, 2004"};
 			  return mockDates;
 		  }
 		  
 	      @Override
-		  protected String[] getTitles() {
+		  protected String[] getTitles(Document doc) {
 			  String[] mockTitles = new String[] {"Something Cool", "Something Else", "Event of Awesome", "Nap Time", "More Naps"};
 			  return mockTitles;
 		  }

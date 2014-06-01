@@ -35,11 +35,23 @@ public class WheelingApp
     {
         ArrayList<UpcomingEvent> result = new ArrayList<UpcomingEvent>(4);
         
-        String[] dates, titles;
-        dates = getDates();
-        titles = getTitles();
+        Document doc = null;
         
-        for (int i = 0; i < 4; i++)
+        try {
+        	doc = Jsoup.connect("http://whs.d214.org/").get();
+        } catch (Exception exc)
+        {
+            System.err.println(exc.getLocalizedMessage());
+            exc.printStackTrace();
+            result.add(new UpcomingEvent("ERRORERROR", "ERRORERROR"));
+            return result;
+        }
+        	
+        String[] dates, titles;
+        dates = getDates(doc);
+        titles = getTitles(doc);
+        
+        for (int i = 0; i < dates.length; i++)
         {
             UpcomingEvent current = new UpcomingEvent(dates[i], titles[i]);
             result.add(current);
@@ -48,14 +60,14 @@ public class WheelingApp
         return result;
     }
     
-    protected String[] getDates()
+    protected String[] getDates(Document doc)
     {
-        try
-        {
-            Document doc = Jsoup.connect("http://whs.d214.org/").get();
+//        try
+//        {
+//            Document doc = Jsoup.connect("http://whs.d214.org/").get();
             Elements eventItems = doc.select(".eventitem .time");
             
-            String[] result = new String[4];
+            String[] result = new String[eventItems.size()];
             int i = 0;
             for (Iterator iterator = eventItems.iterator(); iterator.hasNext();)
             {
@@ -67,20 +79,20 @@ public class WheelingApp
             }
             
             return result;
-        }
-        catch (Exception exc)
-        {
-            System.err.println(exc.getLocalizedMessage());
-            exc.printStackTrace();
-        	return new String[]{"ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR"};
-        }
+//        }
+//        catch (Exception exc)
+//        {
+//            System.err.println(exc.getLocalizedMessage());
+//            exc.printStackTrace();
+//        	return new String[]{"ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR"};
+//        }
     }
     
-    protected String[] getTitles()
+    protected String[] getTitles(Document doc)
     {
-        try
-        {
-            Document doc = Jsoup.connect("http://whs.d214.org/").get();
+//        try
+//        {
+//            Document doc = Jsoup.connect("http://whs.d214.org/").get();
             Elements eventItems = doc.select(".eventitem .descr .bold .bold");
             
             String[] result = new String[4];
@@ -95,13 +107,13 @@ public class WheelingApp
             }
             
             return result;
-        }
-        catch (Exception exc)
-        {
-        	System.err.println(exc.getLocalizedMessage());
-            exc.printStackTrace();
-        	return new String[]{"ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR"};
-        }
+//        }
+//        catch (Exception exc)
+//        {
+//        	System.err.println(exc.getLocalizedMessage());
+//            exc.printStackTrace();
+//        	return new String[]{"ERRORERROR", "ERRORERROR", "ERRORERROR", "ERRORERROR"};
+//        }
     }
     
     protected Element getAnnouncementsTable() throws IOException {
